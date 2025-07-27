@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jmeter-slaves
+spec:
+  clusterIP: None
+  selector:
+    app: jmeter-slave
+  ports:
+    - port: 1099
+      targetPort: 1099
+    - port: 50000
+      targetPort: 50000

@@ -1,0 +1,42 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: jmeter-master
+spec:
+  template:
+    spec:
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      containers:
+        - name: jmeter-master
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - sh
+            - /scripts/entrypoint.sh
+          env:
+            - name: AWS_REGION
+              value: {{ .Values.aws.region }}
+            - name: AWS_DEFAULT_REGION
+              value: {{ .Values.aws.region }}
+            - name: S3_BUCKET
+              value: {{ .Values.aws.bucket }}
+            - name: TEST_PLAN_FILE
+              value: {{ .Values.testPlan.fileName }}
+          volumeMounts:
+            - name: testplan
+              mountPath: /tests
+            - name: results
+              mountPath: {{ .Values.persistence.mountPath }}
+            - name: scripts
+              mountPath: /scripts
+      restartPolicy: Never
+      volumes:
+        - name: testplan
+          configMap:
+            name: {{ .Values.testPlan.configMapName }}
+        - name: results
+          persistentVolumeClaim:
+            claimName: jmeter-results
+        - name: scripts
+          configMap:
+            name: jmeter-entrypoint

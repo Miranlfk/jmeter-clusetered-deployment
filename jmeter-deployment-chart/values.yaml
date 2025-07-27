@@ -1,0 +1,31 @@
+image:
+  repository: miranlfk/jmeter
+  tag: 5.6.3
+  pullPolicy: IfNotPresent
+
+slave:
+  replicaCount: 5
+
+service:
+  type: ClusterIP
+
+testPlan:
+  configMapName: jmeter-testplan
+  fileName: testplan.jmx
+
+persistence:
+  enabled: true
+  storageClassName: ""   # "gp2" or "" for default, or use EFS for multi-pod
+  accessModes:
+    - ReadWriteOnce
+  size: 2Gi
+  mountPath: /results
+
+aws:
+  bucket: s3://your-bucket/path
+  region: us-east-1
+
+serviceAccount:
+  create: true
+  name: jmeter-aws
+  annotations: {} # For IRSA, e.g.: { "eks.amazonaws.com/role-arn": "arn:aws:iam::<account-id>:role/jmeter-irsa-role" }
