@@ -7,7 +7,9 @@ spec:
   selector:
     app: jmeter-slave
   ports:
-    - port: 1099
+    - name: rmi
+      port: 1099
       targetPort: 1099
-    - port: 50000
+    - name: server
+      port: 50000
       targetPort: 50000

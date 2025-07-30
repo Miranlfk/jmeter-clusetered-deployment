@@ -1,10 +1,10 @@
 image:
-  repository: miranlfk/jmeter
+  repository: 302263080987.dkr.ecr.us-east-2.amazonaws.com/jmeter
   tag: 5.6.3
   pullPolicy: IfNotPresent
 
 slave:
-  replicaCount: 5
+  replicaCount: 2
 
 service:
   type: ClusterIP
@@ -15,17 +15,27 @@ testPlan:
 
 persistence:
   enabled: true
-  storageClassName: ""   # "gp2" or "" for default, or use EFS for multi-pod
+  storageClassName: "efs-sc"     # Must match your EFS StorageClass name
   accessModes:
-    - ReadWriteOnce
-  size: 2Gi
-  mountPath: /results
+    - ReadWriteMany              # EFS requires ReadWriteMany
+  size: 2Gi                      # Size is ignored by EFS but required
+  mountPath: /results             # (Or Delete)
+
+storageClass:
+  create: true
+  name: efs-sc
+  fileSystemId: fs-096659897e9ed4dd0      # Replace with your EFS FileSystem ID
+  reclaimPolicy: Delete
+  mountOptions: []
 
 aws:
-  bucket: s3://your-bucket/path
-  region: us-east-1
+  bucket: s3://bucketlist1010100101010/jmeter/
+  region: us-east-2
 
 serviceAccount:
   create: true
-  name: jmeter-aws
-  annotations: {} # For IRSA, e.g.: { "eks.amazonaws.com/role-arn": "arn:aws:iam::<account-id>:role/jmeter-irsa-role" }
+  name: jmeter-test
+  annotations: 
+    eks.amazonaws.com/role-arn: arn:aws:iam::302263080987:role/eksctl-eks-jmeter-public-addon-iamserviceacco-Role1-xCTTneoVnGqM
+
+

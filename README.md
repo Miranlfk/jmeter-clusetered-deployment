@@ -136,3 +136,7 @@ aws s3 cp s3://your-bucket/path/results-YYYYMMDDHHMMSS.jtl .
 
 
 
+um_id |              um_user_id              | um_user_name |               um_user_password               |      um_salt_value       | um_require_change |     um_changed_time     | um_tenant_id
+-------+--------------------------------------+--------------+----------------------------------------------+--------------------------+-------------------+-------------------------+--------------
+        1 | 05ede236-af54-4b5e-9f09-918f199c637c | safelabrador | 7AH1JoSOWi2gjLL//vBjQBWjKWX6uerYgsJzdyHowVk= | 5S6m+i++XNTja9vZQx/w5A== | f                 | 2025-06-24 19:00:39.499 |        -1234
+(1 row)

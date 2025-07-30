@@ -1,0 +1,19 @@
+{{- if .Values.storageClass.create }}
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: {{ .Values.storageClass.name | quote }}
+provisioner: efs.csi.aws.com
+parameters:
+  provisioningMode: efs-ap
+  fileSystemId: {{ .Values.storageClass.fileSystemId | quote }}
+  directoryPerms: "700"
+  gidRangeStart: "1000"
+  gidRangeEnd: "2000"
+  basePath: "/"
+reclaimPolicy: {{ .Values.storageClass.reclaimPolicy | default "Delete" }}
+{{- if .Values.storageClass.mountOptions }}
+mountOptions:
+{{- toYaml .Values.storageClass.mountOptions | nindent 2 }}
+{{- end }}
+{{- end }}

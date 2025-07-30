@@ -25,8 +25,8 @@ spec:
           volumeMounts:
             - name: testplan
               mountPath: /tests
-            - name: results
-              mountPath: {{ .Values.persistence.mountPath }}
+            # - name: results
+            #   mountPath: {{ .Values.persistence.mountPath }}
             - name: scripts
               mountPath: /scripts
       restartPolicy: Never
@@ -34,9 +34,9 @@ spec:
         - name: testplan
           configMap:
             name: {{ .Values.testPlan.configMapName }}
-        - name: results
-          persistentVolumeClaim:
-            claimName: jmeter-results
+        # - name: results
+          # persistentVolumeClaim:
+          #   claimName: jmeter-results
         - name: scripts
           configMap:
             name: jmeter-entrypoint
